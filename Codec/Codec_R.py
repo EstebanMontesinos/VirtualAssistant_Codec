@@ -5,6 +5,8 @@ import random
 import re
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+import time
+import smtplib
 
 
 def speak(audio): #we are passing audio as an argument to let codec speak.
@@ -38,9 +40,6 @@ def codec(command):
         "Could you please repeat that",
         "Excuse me",
     ]
-    #Greeting (base case)
-    if "Hello" in command:
-        speak("Hello I am Codec. How can I help you?")
     #Web automation
     if 'open google and search' in command:
         RegE = re.search('open google and search (.*)', command) #uses regular  expresions import re (.*) will add that to a capture group.
@@ -49,12 +48,34 @@ def codec(command):
         if RegE:
             subgoogle = RegE.group(1)
             url = url + 'r/' + subgoogle
-        speak('You got it!')
+        speak('You got it! Opening google now')
         driver = webdriver.Chrome('/Users/estebanmontesinos/Downloads/chromedriver')  # must select specific file.
         driver.get('http://www.google.com')
         search = driver.find_element_by_name('q')  # finds search bar by looking at inspect element
         search.send_keys(str(search_for))  # sends search keys  and converts search for into a string based on command
         search.send_keys(Keys.RETURN)  # hits return key
+
+    #Email command.
+    elif 'email' or 'gmail' in command:
+        sender_email = "esteban.montesinos.services@gmail.com" #Place your email here
+        receiver_email = "davidme1500@gmail.com" #place sender email here
+        speak('What is the subject?')
+        time.sleep(3)
+        subject = myCommand()
+        speak('What should message should I send?')
+        time.sleep(3)
+        message = myCommand()
+        content = 'Subject: {}\n\n{}'.format(subject, message)
+        mail = smtplib.SMTP('smtp.gmail.com', 587) # init gmail SMTP
+        mail.ehlo() #identify to server
+        mail.starttls() # encrypt session
+        mail.login(receiver_email, 'psw')#Log ins
+        mail.sendmail(receiver_email, sender_email,content)#sends message
+        mail.close()
+        speak('Email sent.')
+
+    elif "Hello" in command:
+        speak("Hello I am Codec. How can I help you?")
 
     else:
         error = random.choice(errors)

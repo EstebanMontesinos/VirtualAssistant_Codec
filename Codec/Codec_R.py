@@ -57,8 +57,9 @@ def codec(command):
 
     #Email command.
     elif 'email' or 'gmail' in command:
+        speak("Type email target below")
+        receiver_email= str(input("Type email target here:"))
         sender_email = "esteban.montesinos.services@gmail.com" #Place your email here
-        receiver_email = "davidme1500@gmail.com" #place sender email here
         speak('What is the subject?')
         time.sleep(3)
         subject = myCommand()
@@ -69,8 +70,8 @@ def codec(command):
         mail = smtplib.SMTP('smtp.gmail.com', 587) # init gmail SMTP
         mail.ehlo() #identify to server
         mail.starttls() # encrypt session
-        mail.login(receiver_email, 'psw')#Log ins
-        mail.sendmail(receiver_email, sender_email,content)#sends message
+        mail.login(sender_email, 'PSWD')#Log ins
+        mail.sendmail(sender_email, receiver_email,content)#sends message
         mail.close()
         speak('Email sent.')
 

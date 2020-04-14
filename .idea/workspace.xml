@@ -102,6 +102,7 @@
       <workItem from="1586670292354" duration="430000" />
       <workItem from="1586734339526" duration="2382000" />
       <workItem from="1586737726644" duration="2722000" />
+      <workItem from="1586842080919" duration="678000" />
     </task>
     <servers />
   </component>
@@ -133,10 +134,11 @@
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state x="340" y="164" key="SettingsEditor/0.0.1680.1050@0.0.1680.1050" timestamp="1586203917737" />
-    <state x="515" y="356" key="com.intellij.ide.util.TipDialog" timestamp="1586735310053">
-      <screen x="0" y="0" width="1680" height="1050" />
+    <state x="515" y="371" key="com.intellij.ide.util.TipDialog" timestamp="1586842080952">
+      <screen x="0" y="23" width="1680" height="1027" />
     </state>
     <state x="515" y="356" key="com.intellij.ide.util.TipDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1586735310053" />
+    <state x="515" y="371" key="com.intellij.ide.util.TipDialog/0.23.1680.1027@0.23.1680.1027" timestamp="1586842080952" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/VirtualAssistant$Codec_R.coverage" NAME="Codec_R Coverage Results" MODIFIED="1586653533857" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Codec" />

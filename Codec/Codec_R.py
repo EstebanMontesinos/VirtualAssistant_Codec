@@ -9,16 +9,17 @@ import time
 import smtplib
 import bs4
 import requests
-
+import urllib.request #used to make requests
+import urllib.parse #used to parse values into the url
+import webbrowser
 
 def speak(audio): #we are passing audio as an argument to let codec speak.
     print(audio)
-    for line in audio.splitlines(): #program will loop lines with the help of splitlines().This method is used to split the lines at line boundaries.
-        text_to_speech = gTTS(text=audio, lang="en-us")#GTTS will convert all these text to speech.
-        text_to_speech.save('audio.mp3') #Once loop finished, save() method writes result to file.
-        mixer.init()#Pygame mixer is a module used foor loading and playing sounds and must be initialized before using it.
-        mixer.music.load("audio.mp3")
-        mixer.music.play()
+    text_to_speech = gTTS(text=audio, lang="en-us")#GTTS will convert all these text to speech.
+    text_to_speech.save('audio.mp3') #Once loop finished, save() method writes result to file.
+    mixer.init()#Pygame mixer is a module used foor loading and playing sounds and must be initialized before using it.
+    mixer.music.load("audio.mp3")
+    mixer.music.play()
 
 def myCommand():
     r = sr.Recognizer()#You need to initialize the recognizer
@@ -76,7 +77,7 @@ def codec(command):
         mail = smtplib.SMTP('smtp.gmail.com', 587) # init gmail SMTP
         mail.ehlo() #identify to server
         mail.starttls() # encrypt session
-        mail.login(sender_email, 'Nico201996')#Log ins
+        mail.login(sender_email, '')#Log ins
         mail.sendmail(sender_email, receiver_email,content)#sends message
         mail.close()
         speak('Email sent.')
@@ -90,7 +91,7 @@ def codec(command):
             response = requests.get("https://en.wikipedia.org/wiki/" + query[3])#URL will look like https://en.wikipedia.org/wiki/Keyword so we are sending get request with keyword
 
             if response is not None:
-                html = bs4.BeautifulSoup(response.text, 'html.parser')#converts html text to normal text
+                html = bs4.BeautifulSoup(response.text, 'html.parser')#parses html text to normal text
                 paragraphs = html.select("p")#looks for paragraph tag.
                 for i in paragraphs:
                     print (i)
@@ -103,7 +104,19 @@ def codec(command):
                 mixer.init()
                 mixer.music.load("speech.mp3")
                 mixer.music.play()
-                x = str(input("Press any key to stop dictation"))
+                x = str(input("Press enter to talk to Codec"))
+
+    elif 'youtube' in command:
+        speak('Opening youtube now !')
+        RegE = re.search('youtube (.+)', command)
+        if RegE:
+            domain = command.split("youtube", 1)[1]
+            query_string = urllib.parse.urlencode({"search_query": domain})#Search key must be encoded before parsing into url.
+            html_content = urllib.request.urlopen("http://www.youtube.com/results?" + query_string)
+            search_results = re.findall(r'href=\"\/watch\?v=(.{11})',html_content.read().decode())  # Each video on youtube has its own 11 characters ID the decode() function is used to convert from one encoding scheme, in which argument string is encoded to the desired encoding scheme
+            webbrowser.open("http://www.youtube.com/watch?v={}".format(search_results[0]))
+            pass
+
 
     elif 'stop' in command:
         mixer.music.stop()

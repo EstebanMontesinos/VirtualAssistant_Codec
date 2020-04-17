@@ -4,6 +4,7 @@
     <list default="true" id="4923cbe8-2364-4329-bb69-b3b36f09db9f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Codec/Codec_R.py" beforeDir="false" afterPath="$PROJECT_DIR$/Codec/Codec_R.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audio.mp3" beforeDir="false" afterPath="$PROJECT_DIR$/audio.mp3" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,7 +105,7 @@
       <workItem from="1586842080919" duration="678000" />
       <workItem from="1586885430798" duration="12000" />
       <workItem from="1586885719466" duration="1746000" />
-      <workItem from="1587096647993" duration="1690000" />
+      <workItem from="1587096647993" duration="3942000" />
     </task>
     <servers />
   </component>

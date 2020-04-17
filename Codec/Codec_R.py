@@ -84,27 +84,29 @@ def codec(command):
     #In order to crawl data we will use beautifulsoup4 a Python library for pulling data out of HTML and XML files.
 
     elif 'wikipedia' in command:
-        RegE = re.search('search in wikipedia (.+)', command)
+        RegE = re.search('search in wikipedia (.+)', command)#uses regular  expresions import re (.+) will add that to a capture group.
         if RegE:
             query = command.split()
-            response = requests.get("https://en.wikipedia.org/wiki/" + query[3])
+            response = requests.get("https://en.wikipedia.org/wiki/" + query[3])#URL will look like https://en.wikipedia.org/wiki/Keyword so we are sending get request with keyword
 
             if response is not None:
                 html = bs4.BeautifulSoup(response.text, 'html.parser')#converts html text to normal text
-                paragraphs = html.select("p")
+                paragraphs = html.select("p")#looks for paragraph tag.
                 for i in paragraphs:
                     print (i)
                 intro = '\n'.join([i.text for i in paragraphs[0:5]])
                 print(intro)
                 mp3name = 'speech.mp3'
                 language = 'en-us'
-                myobj = gTTS(text=intro, lang=language, slow=False)
-                myobj.save(mp3name)
+                text_to_speech = gTTS(text=intro, lang=language, slow=False)
+                text_to_speech.save(mp3name)
                 mixer.init()
                 mixer.music.load("speech.mp3")
                 mixer.music.play()
-            elif 'stop' in command:
-                mixer.music.stop()
+                x = str(input("Press any key to stop dictation"))
+
+    elif 'stop' in command:
+        mixer.music.stop()
 
     else:
         error = random.choice(errors)
@@ -115,7 +117,7 @@ def codec(command):
 
 #main
 speak("Codec is ready!")
-time.sleep(3)
+time.sleep(4)
 while True:
     codec(myCommand())#we pass our command function to listen to  audio
     

@@ -7,6 +7,8 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
 import smtplib
+import bs4
+import requests
 
 
 def speak(audio): #we are passing audio as an argument to let codec speak.
@@ -31,7 +33,7 @@ def myCommand():
 
     except sr.UnknownValueError:
         print("Your command couldn't be heard")
-        command = myCommand(); #Uses a recursive call to loop back  if command couldnt be heard or recognized.
+        command = myCommand() #Uses a recursive call to loop back  if command couldnt be heard or recognized.
     return command
 
 def codec(command):
@@ -41,7 +43,11 @@ def codec(command):
         "Excuse me",
     ]
     #Web automation
-    if 'open google and search' in command:
+    if "hello" in command:
+        speak("Hello I am Codec. How can I help you?")
+        time.sleep(3)
+
+    elif 'open google and search' in command:
         RegE = re.search('open google and search (.*)', command) #uses regular  expresions import re (.*) will add that to a capture group.
         search_for = command.split("search", 1)[1] #use group 1 to search appropriately.
         url = 'https://www.google.com/'
@@ -56,34 +62,60 @@ def codec(command):
         search.send_keys(Keys.RETURN)  # hits return key
 
     #Email command.
-    elif 'email' or 'gmail' in command:
+    elif 'email' in command:
         speak("Type email target below")
         receiver_email= str(input("Type email target here:"))
         sender_email = "esteban.montesinos.services@gmail.com" #Place your email here
         speak('What is the subject?')
         time.sleep(3)
         subject = myCommand()
-        speak('What should message should I send?')
+        speak('What message should I send?')
         time.sleep(3)
         message = myCommand()
         content = 'Subject: {}\n\n{}'.format(subject, message)
         mail = smtplib.SMTP('smtp.gmail.com', 587) # init gmail SMTP
         mail.ehlo() #identify to server
         mail.starttls() # encrypt session
-        mail.login(sender_email, 'PSWD')#Log ins
+        mail.login(sender_email, 'Nico201996')#Log ins
         mail.sendmail(sender_email, receiver_email,content)#sends message
         mail.close()
         speak('Email sent.')
 
-    elif "Hello" in command:
-        speak("Hello I am Codec. How can I help you?")
+    #In order to crawl data we will use beautifulsoup4 a Python library for pulling data out of HTML and XML files.
+
+    elif 'wikipedia' in command:
+        RegE = re.search('search in wikipedia (.+)', command)
+        if RegE:
+            query = command.split()
+            response = requests.get("https://en.wikipedia.org/wiki/" + query[3])
+
+            if response is not None:
+                html = bs4.BeautifulSoup(response.text, 'html.parser')#converts html text to normal text
+                paragraphs = html.select("p")
+                for i in paragraphs:
+                    print (i)
+                intro = '\n'.join([i.text for i in paragraphs[0:5]])
+                print(intro)
+                mp3name = 'speech.mp3'
+                language = 'en-us'
+                myobj = gTTS(text=intro, lang=language, slow=False)
+                myobj.save(mp3name)
+                mixer.init()
+                mixer.music.load("speech.mp3")
+                mixer.music.play()
+            elif 'stop' in command:
+                mixer.music.stop()
 
     else:
         error = random.choice(errors)
         speak(error)
+        time.sleep(3)
+
+
 
 #main
 speak("Codec is ready!")
+time.sleep(3)
 while True:
     codec(myCommand())#we pass our command function to listen to  audio
     
